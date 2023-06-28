@@ -16,20 +16,26 @@ function App() {
   const dispatch = useDispatch()
   const {url}  = useSelector(state => state.home)
 
-  useEffect(() => {
-    apiTesting();
-  }, [])
-
-  const apiTesting = () => {
-    fetchDataFromApi('/movie/popular')
+  const fetchApiConfig = () => {
+    fetchDataFromApi('/configuration')
       .then((res) => {
         console.log(res)
-        dispatch(getApiConfiguration(res))
+        const url = {
+          backdrop: res.images.secure_base_url + "original",
+          poster: res.images.secure_base_url + "original",
+          original: res.images.secure_base_url + "original"
+        }
+        dispatch(getApiConfiguration(url))
       })
   }
 
+  useEffect(() => {
+    fetchApiConfig();
+  }, [])
+
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />}/>
         <Route path="/:mediType/:id" element={<Details />}/>
@@ -37,6 +43,7 @@ function App() {
         <Route path="/explore/:mediaType" element={<Explore />}/>
         <Route path="*" element={<NotFound />}/>
       </Routes>
+      <Footer /> 
     </BrowserRouter>
   )
 }

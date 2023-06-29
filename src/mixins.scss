@@ -1,5 +1,5 @@
 @mixin sm {
-  @media only screen and (min-width: 648px){
+  @media only screen and (min-width: 640px){
     @content
   }
 };
@@ -17,7 +17,7 @@
 };
 
 @mixin xl {
-  @media only screen and (min-width: 1200px){
+  @media only screen and (min-width: 1280px){
     @content
   }
 };
@@ -34,4 +34,4 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis; 
-}
+};

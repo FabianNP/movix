@@ -39,7 +39,7 @@ const Header = () => {
     return () => {
       window.removeEventListener("scroll", controlNavbar)  
     } 
-  }, [])
+  }, [lastScrollY])
 
   const searchQueryHandler = (event) => {
     const query = searchInputRef.current.value

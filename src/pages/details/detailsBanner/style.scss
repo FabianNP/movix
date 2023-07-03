@@ -115,7 +115,7 @@
                 gap: 20px;
                 cursor: pointer;
                 svg {
-                    width: 60px;
+                    width: 100px;
                     @include md {
                         width: 80px;
                     }
@@ -135,7 +135,7 @@
                     stroke: white;
                     stroke-dasharray: 650;
                     stroke-dashoffset: 1300;
-                    transition: all 0.5s ease-in-out;
+                    transition: all 0.8s ease-in-out;
                 }
                 &:hover {
                     .text {
@@ -145,7 +145,7 @@
                         stroke-dashoffset: 0;
                         opacity: 1;
                         stroke: var(--pink);
-                        animation: trailorPlay 0.7s ease-in-out;
+                        // animation: trailorPlay 0.7s ease-in-out;
                     }
                     .circle {
                         stroke-dashoffset: 0;

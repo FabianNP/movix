@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
@@ -11,8 +11,8 @@ import Genres from "../../../components/genres/Genres";
 import CircleRating from "../../../components/circleRating/CircleRating";
 import Img from "../../../components/lazyLoadImage/Img.jsx";
 import PosterFallback from "../../../assets/no-poster.png";
-import { PlayIcon } from "./Playbtn";
 import VideoPopup from "../../../components/videoPopup/VideoPopup";
+import { PlayIcon } from "./Playbtn";
 
 const DetailsBanner = ({ video, crew }) => {
   const [show, setShow] = useState(false);
@@ -22,17 +22,13 @@ const DetailsBanner = ({ video, crew }) => {
   const { data, loading } = useFetch(`/${mediaType}/${id}`);
 
   const { url } = useSelector((state) => state.home);
-  const _genres = data?.genres.map((g) => g.id);
+
+  const _genres = data?.genres?.map((g) => g.id);
 
   const director = crew?.filter((f) => f.job === "Director");
   const writer = crew?.filter(
-    (f) => f.job === "Screenplay" || "Story" || "Writer"
+    (f) => f.job === "Screenplay" || f.job === "Story" || f.job === "Writer"
   );
-
-  // const officialTrailer = useRef()
-  // useEffect(() => {
-  //   officialTrailer.current = video.filter(v => v.name == "Official Trailer")
-  // }, [video])
 
   const toHoursAndMinutes = (totalMinutes) => {
     const hours = Math.floor(totalMinutes / 60);
@@ -42,15 +38,15 @@ const DetailsBanner = ({ video, crew }) => {
 
   return (
     <div className="detailsBanner">
-      {!loading ? (                         //--------Ternary Operator 1
+      {!loading ? (
         <>
           {!!data && (
-            <React.Fragment>                 
+            <React.Fragment>
               <div className="backdrop-img">
                 <Img src={url.backdrop + data.backdrop_path} />
               </div>
               <div className="opacity-layer"></div>
-              <ContentWrapper> 
+              <ContentWrapper>
                 <div className="content">
                   <div className="left">
                     {data.poster_path ? (
@@ -64,12 +60,14 @@ const DetailsBanner = ({ video, crew }) => {
                   </div>
                   <div className="right">
                     <div className="title">
-                      {`${data.name || data.title}(${dayjs(
+                      {`${data.name || data.title} (${dayjs(
                         data?.release_date
                       ).format("YYYY")})`}
                     </div>
                     <div className="subtitle">{data.tagline}</div>
+
                     <Genres data={_genres} />
+
                     <div className="row">
                       <CircleRating rating={data.vote_average.toFixed(1)} />
                       <div
@@ -83,10 +81,12 @@ const DetailsBanner = ({ video, crew }) => {
                         <span className="text">Watch Trailer</span>
                       </div>
                     </div>
+
                     <div className="overview">
                       <div className="heading">Overview</div>
                       <div className="description">{data.overview}</div>
                     </div>
+
                     <div className="info">
                       {data.status && (
                         <div className="infoItem">
@@ -98,24 +98,25 @@ const DetailsBanner = ({ video, crew }) => {
                         <div className="infoItem">
                           <span className="text bold">Release Date: </span>
                           <span className="text">
-                            {dayjs(data.release_date).format("MMMM D, YYYY")}
+                            {dayjs(data.release_date).format("MMM D, YYYY")}
                           </span>
                         </div>
                       )}
                       {data.runtime && (
                         <div className="infoItem">
-                          <span className="text bold">Release Date: </span>
+                          <span className="text bold">Runtime: </span>
                           <span className="text">
                             {toHoursAndMinutes(data.runtime)}
                           </span>
                         </div>
                       )}
                     </div>
+
                     {director?.length > 0 && (
                       <div className="info">
                         <span className="text bold">Director: </span>
                         <span className="text">
-                          {director.map((d, i) => (
+                          {director?.map((d, i) => (
                             <span key={i}>
                               {d.name}
                               {director.length - 1 !== i && ", "}
@@ -124,29 +125,29 @@ const DetailsBanner = ({ video, crew }) => {
                         </span>
                       </div>
                     )}
+
                     {writer?.length > 0 && (
                       <div className="info">
-                        <span className="text bold">
-                          Writer{writer.length - 1 > 0 ? "s" : ""}:{" "}
-                        </span>
+                        <span className="text bold">Writer: </span>
                         <span className="text">
-                          {writer.slice(0, 5).map((d, i) => (
+                          {writer?.map((d, i) => (
                             <span key={i}>
                               {d.name}
-                              {writer.slice(0, 5).length - 1 !== i && ", "}
+                              {writer.length - 1 !== i && ", "}
                             </span>
                           ))}
                         </span>
                       </div>
                     )}
+
                     {data?.created_by?.length > 0 && (
                       <div className="info">
-                        <span className="text bold">Creator{data}: </span>
+                        <span className="text bold">Creator: </span>
                         <span className="text">
-                          {data.created_by?.map((d, i) => (
+                          {data?.created_by?.map((d, i) => (
                             <span key={i}>
                               {d.name}
-                              {data.length - 1 !== i && ", "}
+                              {data?.created_by.length - 1 !== i && ", "}
                             </span>
                           ))}
                         </span>
@@ -164,7 +165,7 @@ const DetailsBanner = ({ video, crew }) => {
             </React.Fragment>
           )}
         </>
-      ) : (                                    //--------Ternary Operator 2
+      ) : (
         <div className="detailsBannerSkeleton">
           <ContentWrapper>
             <div className="left skeleton"></div>

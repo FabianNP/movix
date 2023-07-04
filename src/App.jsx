@@ -13,7 +13,7 @@ import NotFound from "./pages/404/NotFound"
 
 function App() {  
   const dispatch = useDispatch()
-  const {url}  = useSelector(state => state.home)
+  // const {url}  = useSelector(state => state.home)
 
   const fetchApiConfig = () => {
     fetchDataFromApi('/configuration')
